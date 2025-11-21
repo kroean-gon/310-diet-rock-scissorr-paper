@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>가위바위보 식단 미션</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game">
+    <h1>가위바위보 식단 미션</h1>
+
+    <p class="sub">
+      이기면 <strong>쉬운 미션</strong>, 지면 <strong>빡센 미션</strong>!<br />
+      가위·바위·보 중 하나를 골라 눌러보세요.
+    </p>
+
+    <div class="choices">
+      <button class="choice" data-choice="scissors">
+        <span class="emoji">✌️</span>
+        <span class="label">가위</span>
+      </button>
+      <button class="choice" data-choice="rock">
+        <span class="emoji">✊</span>
+        <span class="label">바위</span>
+      </button>
+      <button class="choice" data-choice="paper">
+        <span class="emoji">✋</span>
+        <span class="label">보</span>
+      </button>
+    </div>
+
+    <div class="result-box">
+      <p class="rps-text" id="rps-text">
+        아직 시작 전이에요. 버튼을 눌러 게임을 시작해보세요!
+      </p>
+      <p class="mission-title" id="mission-title">오늘의 미션</p>
+      <p class="mission-text" id="mission-text">
+        결과에 따라 식단 미션이 여기에 표시됩니다.
+      </p>
+    </div>
+
+    <p class="hint">
+      이기면 “쉬운 미션(플렉스 허용)” · 지면 “조금 더 타이트한 미션”으로 나옵니다.
+    </p>
+
+    <p class="brand">310 DIETCLASS</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
