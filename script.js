@@ -55,8 +55,10 @@ const handsBox = document.getElementById("rps-hands");
 const userHandEl = document.getElementById("user-hand");
 const aiHandEl = document.getElementById("ai-hand");
 
-let isPlaying = false;
+let isPlaying = false;  // 애니메이션 중인지
+let finished = false;   // 한 번 승패 난 뒤인지(게임 끝)
 
+// 선택을 한글로
 function getKoreanChoice(choice) {
   if (choice === "scissors") return "가위";
   if (choice === "rock") return "바위";
@@ -81,8 +83,23 @@ function pickRandom(arr) {
   return arr[idx];
 }
 
+function lockButtons() {
+  choiceButtons.forEach((btn) => {
+    btn.disabled = true;
+    btn.style.opacity = "0.4";
+    btn.style.cursor = "default";
+  });
+}
+
 function onUserChoice(e) {
-  if (isPlaying) return; // 애니메이션 중엔 입력 무시
+  // 이미 한 번 끝난 상태면 더 이상 못 함
+  if (finished) {
+    rpsTextEl.textContent = "오늘은 이미 한 번 했어요! 이 미션으로 인증해볼까요?";
+    return;
+  }
+
+  // 애니메이션 중이면 무시
+  if (isPlaying) return;
 
   const userChoice = e.currentTarget.getAttribute("data-choice");
 
@@ -117,12 +134,17 @@ function onUserChoice(e) {
     const aiKo = getKoreanChoice(aiChoice);
 
     if (result === 0) {
+      // 비김 – 미션 없이 다시 시도 가능 (finished 그대로 false)
       rpsTextEl.textContent = `비겼어요! (나: ${userKo} / 상대: ${aiKo}) 한 번 더 눌러주세요.`;
       missionTitleEl.textContent = "오늘의 미션";
       missionTextEl.textContent = "승패가 나면 그때 미션이 나옵니다.";
       isPlaying = false;
       return;
     }
+
+    // 여기부터는 승패 결정 → 게임 종료
+    finished = true;
+    lockButtons();
 
     if (result === 1) {
       const mission = pickRandom(easyMissions);
