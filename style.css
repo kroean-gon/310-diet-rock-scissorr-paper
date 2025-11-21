@@ -15,7 +15,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   padding: 32px 16px 40px;
   text-align: center;
 }
@@ -32,10 +32,50 @@ h1 {
   line-height: 1.5;
 }
 
+/* 👋 가위바위보 양손 */
+.rps-hands {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 18px;
+}
+
+.hand {
+  font-size: 64px;
+  transition: transform 0.15s ease;
+}
+
+/* 애니메이션 중일 때 손 흔들흔들 */
+.rps-hands.playing .hand.user {
+  animation: shake-user 0.36s linear infinite;
+}
+
+.rps-hands.playing .hand.ai {
+  animation: shake-ai 0.36s linear infinite;
+}
+
+@keyframes shake-user {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(8px); }
+  50% { transform: translateX(0); }
+  75% { transform: translateX(8px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes shake-ai {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(0); }
+  75% { transform: translateX(-8px); }
+  100% { transform: translateX(0); }
+}
+
+/* 선택 버튼들 */
 .choices {
   display: flex;
   gap: 16px;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 
 .choice {
@@ -50,7 +90,7 @@ h1 {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, outline 0.12s ease;
 }
 
 .choice:active {
@@ -73,6 +113,7 @@ h1 {
   font-weight: 600;
 }
 
+/* 결과 박스 */
 .result-box {
   margin-top: 12px;
   max-width: 360px;
@@ -123,13 +164,17 @@ h1 {
     font-size: 22px;
   }
 
+  .hand {
+    font-size: 60px;
+  }
+
   .choices {
     gap: 12px;
   }
 
   .choice {
     width: 90px;
-    height: 120px;
+    height: 115px;
   }
 
   .emoji {
