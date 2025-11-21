@@ -37,37 +37,37 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
+  gap: 40px;
   margin-top: 18px;
 }
 
 .hand {
-  font-size: 64px;
+  font-size: 72px;
   transition: transform 0.15s ease;
 }
 
 /* 애니메이션 중일 때 손 흔들흔들 */
 .rps-hands.playing .hand.user {
-  animation: shake-user 0.36s linear infinite;
+  animation: shake-user 0.3s linear infinite;
 }
 
 .rps-hands.playing .hand.ai {
-  animation: shake-ai 0.36s linear infinite;
+  animation: shake-ai 0.3s linear infinite;
 }
 
 @keyframes shake-user {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(8px); }
-  50% { transform: translateX(0); }
-  75% { transform: translateX(8px); }
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(18px); }
+  50%  { transform: translateX(0); }
+  75%  { transform: translateX(18px); }
   100% { transform: translateX(0); }
 }
 
 @keyframes shake-ai {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-8px); }
-  50% { transform: translateX(0); }
-  75% { transform: translateX(-8px); }
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-18px); }
+  50%  { transform: translateX(0); }
+  75%  { transform: translateX(-18px); }
   100% { transform: translateX(0); }
 }
 
@@ -165,7 +165,7 @@ h1 {
   }
 
   .hand {
-    font-size: 60px;
+    font-size: 64px;
   }
 
   .choices {
