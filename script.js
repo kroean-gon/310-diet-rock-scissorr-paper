@@ -39,4 +39,108 @@ const hardMissions = [
   "오늘 하루 ‘과자·빵·디저트’ 없이 식단만 인증하기",
   "오늘 하루 배달음식·외식 없이 집밥/직접 준비한 식단만 인증하기",
   "저녁 7시 이후에는 물/차만 마시고, 그 전까지 식단만 인증하기",
-  "오늘 하루
+  "오늘 하루 음료는 물/무가당 차만 마시고 식단 인증하기",
+  "모든 식사에 채소 2가지 이상 포함해서 인증하기",
+  "오늘 먹은 모든 끼니를 빠짐없이 전부 사진으로 인증하기",
+  "오늘 한 끼는 밥/빵 양을 평소의 절반으로 줄여서 인증하기",
+  "오늘 먹은 식단 후, 310 화목챌린지 중 아무거나 1개 따라하고 같이 인증하기"
+];
+
+const rpsTextEl = document.getElementById("rps-text");
+const missionTitleEl = document.getElementById("mission-title");
+const missionTextEl = document.getElementById("mission-text");
+const choiceButtons = Array.from(document.querySelectorAll(".choice"));
+
+const handsBox = document.getElementById("rps-hands");
+const userHandEl = document.getElementById("user-hand");
+const aiHandEl = document.getElementById("ai-hand");
+
+let isPlaying = false;
+
+function getKoreanChoice(choice) {
+  if (choice === "scissors") return "가위";
+  if (choice === "rock") return "바위";
+  return "보";
+}
+
+// 결과 판정: 1 = 이김, 0 = 비김, -1 = 짐
+function judge(user, ai) {
+  if (user === ai) return 0;
+  if (
+    (user === "scissors" && ai === "paper") ||
+    (user === "rock" && ai === "scissors") ||
+    (user === "paper" && ai === "rock")
+  ) {
+    return 1;
+  }
+  return -1;
+}
+
+function pickRandom(arr) {
+  const idx = Math.floor(Math.random() * arr.length);
+  return arr[idx];
+}
+
+function onUserChoice(e) {
+  if (isPlaying) return; // 애니메이션 중엔 입력 무시
+
+  const userChoice = e.currentTarget.getAttribute("data-choice");
+
+  // 버튼 선택 표시
+  choiceButtons.forEach((btn) => btn.classList.remove("selected"));
+  e.currentTarget.classList.add("selected");
+
+  // 손 모양 초기화(둘 다 주먹) + 애니메이션 시작
+  if (userHandEl && aiHandEl && handsBox) {
+    userHandEl.textContent = EMOJI.rock;
+    aiHandEl.textContent = EMOJI.rock;
+    handsBox.classList.add("playing");
+  }
+
+  isPlaying = true;
+  rpsTextEl.textContent = "가위… 바위… 보!";
+
+  // 0.9초 정도 흔들다가 결과 결정
+  setTimeout(() => {
+    if (handsBox) handsBox.classList.remove("playing");
+
+    const aiChoice = CHOICES[Math.floor(Math.random() * CHOICES.length)];
+    const result = judge(userChoice, aiChoice);
+
+    // 실제 결과 손 모양 세팅
+    if (userHandEl && aiHandEl) {
+      userHandEl.textContent = EMOJI[userChoice];
+      aiHandEl.textContent = EMOJI[aiChoice];
+    }
+
+    const userKo = getKoreanChoice(userChoice);
+    const aiKo = getKoreanChoice(aiChoice);
+
+    if (result === 0) {
+      rpsTextEl.textContent = `비겼어요! (나: ${userKo} / 상대: ${aiKo}) 한 번 더 눌러주세요.`;
+      missionTitleEl.textContent = "오늘의 미션";
+      missionTextEl.textContent = "승패가 나면 그때 미션이 나옵니다.";
+      isPlaying = false;
+      return;
+    }
+
+    if (result === 1) {
+      const mission = pickRandom(easyMissions);
+      rpsTextEl.textContent = `승리! (나: ${userKo} / 상대: ${aiKo})`;
+      missionTitleEl.textContent = "🎉 쉬운 미션 (플렉스 허용)";
+      missionTextEl.textContent = mission;
+    } else {
+      const mission = pickRandom(hardMissions);
+      rpsTextEl.textContent = `패배… (나: ${userKo} / 상대: ${aiKo})`;
+      missionTitleEl.textContent = "🔥 빡센 미션 (도전 모드)";
+      missionTextEl.textContent = mission;
+    }
+
+    isPlaying = false;
+  }, 900);
+}
+
+// 이벤트 연결
+choiceButtons.forEach((btn) => {
+  btn.addEventListener("click", onUserChoice);
+});
