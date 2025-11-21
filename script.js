@@ -1,7 +1,14 @@
 // ✂️✊✋ 가위바위보 선택값
 const CHOICES = ["scissors", "rock", "paper"];
 
-// ✅ 쉬운 미션 (회원이 이겼을 때) – 플렉스 허용 + 칼로리 조절 느낌
+// 이모지 매핑
+const EMOJI = {
+  scissors: "✌️",
+  rock: "✊",
+  paper: "✋"
+};
+
+// ✅ 쉬운 미션 (회원이 이겼을 때)
 const easyMissions = [
   "평소 먹고 싶었던 음식 먹기 (양만 평소의 80%로 조절해서 인증하기)",
   "배달음식 시켜 먹기 (단백질 포함 + 과한 사이드 없이 인증하기)",
@@ -25,85 +32,11 @@ const easyMissions = [
   "기분전환용 치팅 한 끼 인증 (내가 선택한 메뉴 그대로 보여주기)"
 ];
 
-// ❗ 어려운 미션 (회원이 졌을 때) – 살짝 빡센 쪽
+// ❗ 어려운 미션 (회원이 졌을 때)
 const hardMissions = [
   "하루 동안 모든 식사를 샐러드 또는 채소 많이 담긴 식단으로만 인증하기",
   "오늘 저녁은 샐러드 혹은 단백질+채소 위주 가볍게 먹고 인증하기",
   "오늘 하루 ‘과자·빵·디저트’ 없이 식단만 인증하기",
   "오늘 하루 배달음식·외식 없이 집밥/직접 준비한 식단만 인증하기",
   "저녁 7시 이후에는 물/차만 마시고, 그 전까지 식단만 인증하기",
-  "오늘 하루 음료는 물/무가당 차만 마시고 식단 인증하기",
-  "모든 식사에 채소 2가지 이상 포함해서 인증하기",
-  "오늘 먹은 모든 끼니를 빠짐없이 전부 사진으로 인증하기",
-  "오늘 한 끼는 밥/빵 양을 평소의 절반으로 줄여서 인증하기",
-  "오늘 먹은 식단 후, 310 화목챌린지 중 아무거나 1개 따라하고 같이 인증하기"
-];
-
-const rpsTextEl = document.getElementById("rps-text");
-const missionTitleEl = document.getElementById("mission-title");
-const missionTextEl = document.getElementById("mission-text");
-const choiceButtons = Array.from(document.querySelectorAll(".choice"));
-
-function getKoreanChoice(choice) {
-  if (choice === "scissors") return "가위";
-  if (choice === "rock") return "바위";
-  return "보";
-}
-
-// 결과 판정: 1 = 이김, 0 = 비김, -1 = 짐
-function judge(user, ai) {
-  if (user === ai) return 0;
-  if (
-    (user === "scissors" && ai === "paper") ||
-    (user === "rock" && ai === "scissors") ||
-    (user === "paper" && ai === "rock")
-  ) {
-    return 1;
-  }
-  return -1;
-}
-
-function pickRandom(arr) {
-  const idx = Math.floor(Math.random() * arr.length);
-  return arr[idx];
-}
-
-function onUserChoice(e) {
-  const userChoice = e.currentTarget.getAttribute("data-choice");
-  const aiChoice = CHOICES[Math.floor(Math.random() * CHOICES.length)];
-  const result = judge(userChoice, aiChoice);
-
-  // 버튼 선택 표시
-  choiceButtons.forEach((btn) => btn.classList.remove("selected"));
-  e.currentTarget.classList.add("selected");
-
-  const userKo = getKoreanChoice(userChoice);
-  const aiKo = getKoreanChoice(aiChoice);
-
-  if (result === 0) {
-    // 비김 – 미션 변경 X, 한 번 더
-    rpsTextEl.textContent = `비겼어요! (나: ${userKo} / 상대: ${aiKo}) 한 번 더 눌러주세요.`;
-    missionTitleEl.textContent = "오늘의 미션";
-    missionTextEl.textContent = "승패가 나면 그때 미션이 나옵니다.";
-    return;
-  }
-
-  if (result === 1) {
-    // 이김 – 쉬운 미션
-    const mission = pickRandom(easyMissions);
-    rpsTextEl.textContent = `승리! (나: ${userKo} / 상대: ${aiKo})`;
-    missionTitleEl.textContent = "🎉 쉬운 미션 (플렉스 허용)";
-    missionTextEl.textContent = mission;
-  } else {
-    // 짐 – 어려운 미션
-    const mission = pickRandom(hardMissions);
-    rpsTextEl.textContent = `패배… (나: ${userKo} / 상대: ${aiKo})`;
-    missionTitleEl.textContent = "🔥 빡센 미션 (도전 모드)";
-    missionTextEl.textContent = mission;
-  }
-}
-
-// 이벤트 연결
-choiceButtons.forEach((btn) => {
-  btn.addEventListener("click", onUserChoice);
-});
+  "오늘 하루
